@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  catalog:
+    image: projectnessie/nessie
+    container_name: catalog
+    networks:
+      iceberg-nessie-net:
+    ports:
+      - 19120:19120
+
+  trino:
+    image: trinodb/trino
+    container_name: trino
+    networks:
+      iceberg-nessie-net:
+    ports:
+      - 8080:8080
+    volumes:
+      - "./iceberg.properties:/etc/trino/catalog/iceberg.properties"
+      - "/tmp:/var/trinodata"
+
+networks:
+  iceberg-nessie-net: 
